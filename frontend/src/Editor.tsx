@@ -22,8 +22,6 @@ const Editor: React.FC = () => {
     }
   );
 
-  console.log('test', isFetching);
-
   return (
     <React.Fragment>
       <StyledTextareaAutosize

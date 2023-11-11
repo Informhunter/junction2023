@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
-export async function fetchRandomNumber() {
+export async function getRandomNumber() {
   return axios
-    .get("http://192.168.1.127:8080/api/random")
+    .get<AxiosResponse<{ number: number }>>("http://192.168.1.127:8080/api/random")
     .then(({ data }) => data);
 }

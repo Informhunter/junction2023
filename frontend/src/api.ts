@@ -21,5 +21,6 @@ export async function sendNote(note: string) {
         headers: { "Content-Type": "text/plain" },
       })
       .then(({ data }) => data)
+      .catch((error) => Promise.reject(error.response))
   );
 }

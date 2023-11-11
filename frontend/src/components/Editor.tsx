@@ -11,14 +11,15 @@ import { HelperCat } from "./HelperCat";
 
 const Editor: React.FC = () => {
   const editorRef = useRef<HTMLTextAreaElement>(null);
-  const [isSubmitted, setSubmitted] = useState(false);
+  const [shouldRequest, setShouldRequest] = useState(false);
 
   const { isFetching, isSuccess, data } = useQuery(
-    "sendNote",
+    ["sendNote", editorRef.current?.value],
     () => sendNote(editorRef.current?.value as string),
     {
-      enabled: !!editorRef.current?.value && isSubmitted,
-      onSuccess: () => setSubmitted(false),
+      enabled: shouldRequest,
+      onSuccess: () => setShouldRequest(false),
+      onError: () => setShouldRequest(false),
     }
   );
 
@@ -30,7 +31,7 @@ const Editor: React.FC = () => {
           placeholder="Please, describe your problem in detail..."
         />
         {isFetching && <StyledLinearProgress />}
-        <SubmitButton variant="contained" onClick={() => setSubmitted(true)}>
+        <SubmitButton variant="contained" onClick={() => setShouldRequest(true)}>
           Submit
         </SubmitButton>
       </DiaryFormContainer>
@@ -49,18 +50,20 @@ const DiaryFormContainer = styled("div")({
   width: "70%",
 });
 
-const StyledTextareaAutosize = styled(TextareaAutosize)(({ theme: { palette } }) => ({
-  width: "100%",
-  minHeight: "300px",
-  padding: '16px',
-  border: `1px solid ${palette.blue}`,
-  borderRadius: '4px',
-  fontSize: '16px',
+const StyledTextareaAutosize = styled(TextareaAutosize)(
+  ({ theme: { palette } }) => ({
+    width: "100%",
+    minHeight: "300px",
+    padding: "16px",
+    border: `1px solid ${palette.blue}`,
+    borderRadius: "4px",
+    fontSize: "16px",
 
-  '&:focus': {
-    border: `1px solid ${palette.orange}`,
-  }
-}));
+    "&:focus": {
+      border: `1px solid ${palette.orange}`,
+    },
+  })
+);
 
 const StyledLinearProgress = styled(LinearProgress)({
   width: "100%",

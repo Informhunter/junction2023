@@ -1,8 +1,17 @@
 import React from "react";
-import { Core } from "../Core";
+import { styled } from "@mui/material";
+import { Editor } from "../Editor";
 
 const HomePage: React.FC = () => {
-  return <Core />;
+  return (
+    <Container>
+      <Editor />
+    </Container>
+  );
 };
 
-export { HomePage }
+const Container = styled("div")({
+  padding: "30px",
+});
+
+export { HomePage };

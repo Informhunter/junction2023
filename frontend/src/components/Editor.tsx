@@ -31,7 +31,10 @@ const Editor: React.FC = () => {
           placeholder="Please, describe your problem in detail..."
         />
         {isFetching && <StyledLinearProgress />}
-        <SubmitButton variant="contained" onClick={() => setShouldRequest(true)}>
+        <SubmitButton
+          variant="contained"
+          onClick={() => setShouldRequest(true)}
+        >
           Submit
         </SubmitButton>
       </DiaryFormContainer>
@@ -43,6 +46,7 @@ const Editor: React.FC = () => {
 const Container = styled("div")({
   display: "flex",
   justifyContent: "space-around",
+  flexWrap: "wrap",
   width: "100%",
 });
 
@@ -53,7 +57,7 @@ const DiaryFormContainer = styled("div")({
 const StyledTextareaAutosize = styled(TextareaAutosize)(
   ({ theme: { palette } }) => ({
     width: "100%",
-    minHeight: "300px",
+    minHeight: "25%",
     padding: "16px",
     border: `1px solid ${palette.blue}`,
     borderRadius: "4px",

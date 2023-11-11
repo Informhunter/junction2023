@@ -12,6 +12,9 @@ pydantic = "^2.4.2"
 numpy = "^1.26.1"
 uvicorn = {extras = ["standard"], version = "^0.23.2"}
 aiohttp = "^3.8.6"
+langchain = "^0.0.334"
+openai = "^1.2.3"
+tiktoken = "^0.5.1"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7.3.2"

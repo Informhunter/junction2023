@@ -1,7 +1,7 @@
-import React from 'react';
-import { Box, styled } from '@mui/material';
+import React from "react";
+import { Box, styled } from "@mui/material";
 import { Outlet, Link } from "react-router-dom";
-import logo from '../assets/logo.png'
+import logo from "../assets/logo.png";
 
 const ROUTES = [
   {
@@ -27,7 +27,7 @@ const Header: React.FC = () => {
         <ul>
           {ROUTES.map((route) => (
             <NavItem key={route.link}>
-              <Link to={route.link}>{route.label}</Link>
+              <StyledLink to={route.link}>{route.label}</StyledLink>
             </NavItem>
           ))}
         </ul>
@@ -40,7 +40,6 @@ const Layout: React.FC = () => {
   return (
     <div>
       <Header />
-      <hr />
       <OutletContainer>
         <Outlet />
       </OutletContainer>
@@ -48,21 +47,26 @@ const Layout: React.FC = () => {
   );
 };
 
-const HeaderContainer = styled('div')({
+const HeaderContainer = styled("div")({
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
 });
 
-const NavItem = styled('li')({
+const NavItem = styled("li")({
   display: "inline",
   marginRight: "8px",
 });
 
-const OutletContainer = styled('div')({
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
+const StyledLink = styled(Link)(({ theme: { palette } }) => ({
+  color: palette.orange,
+  fontSize: "24px",
+}));
+
+const OutletContainer = styled("div")({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
   padding: "30px",
 });
 

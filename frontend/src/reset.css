@@ -13,3 +13,7 @@ body {
   min-height: 100%;
   background-color: #fbfbfb;
 }
+
+textarea:focus, input:focus{
+  outline: 0;
+}

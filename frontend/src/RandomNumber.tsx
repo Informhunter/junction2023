@@ -1,11 +1,16 @@
 import React from "react";
+import { Typography } from "@mui/material";
 import { useQuery } from "react-query";
 import { getRandomNumber } from "./api";
 
-function RandomNumber() {
+const RandomNumber: React.FC = () => {
   const { isSuccess, data } = useQuery("randomNumber", getRandomNumber);
 
-  return <h2>Random number: {isSuccess ? data.number : "Loading..."}</h2>;
+  return (
+    <Typography variant="h5">
+      Random number: {isSuccess ? data.number : "Loading..."}
+    </Typography>
+  );
 }
 
 export { RandomNumber };

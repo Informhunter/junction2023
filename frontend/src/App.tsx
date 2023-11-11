@@ -1,6 +1,7 @@
 import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { Crew } from "./Crew";
+import { Typography } from "@mui/material";
+import { Authors } from "./Authors";
 import { RandomNumber } from "./RandomNumber";
 
 const queryClient = new QueryClient({
@@ -11,11 +12,11 @@ const queryClient = new QueryClient({
   }
 })
 
-function App() {
+const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <h1>Junction 2023!</h1>
-      <Crew />
+      <Typography variant='h2'>Junction 2023!</Typography>
+      <Authors />
       <RandomNumber />
     </QueryClientProvider>
   );

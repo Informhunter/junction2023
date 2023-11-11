@@ -1,3 +1,7 @@
+variable "project" {
+  default = "junction2023-diary"
+}
+
 provider "google" {
-  project = "junction2023-diary"
+  project = var.project
 }

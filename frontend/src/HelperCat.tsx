@@ -15,14 +15,22 @@ const HelperCat: React.FC<HelperCatProps> = ({ suggestions }) => {
     <Tooltip
       title={
         <TooltipContent>
-          <Typography>This can help you!</Typography>
-          <code>{JSON.stringify(suggestions, null, '\t')}</code>
+          <Typography>
+            {hasSuggestion
+              ? "This can help you!"
+              : "I'll help you as soon as you share your feelings to me 🙏"}
+          </Typography>
+          <code>{JSON.stringify(suggestions, null, "\t")}</code>
         </TooltipContent>
       }
     >
       <Box
         component="img"
-        sx={{ height: 170, width: hasSuggestion ? 200 : 250, marginTop: '50px' }}
+        sx={{
+          height: 170,
+          width: hasSuggestion ? 200 : 250,
+          marginTop: "50px",
+        }}
         alt="Сat assistant"
         src={hasSuggestion ? activeCat : sleepCat}
       />
@@ -30,9 +38,9 @@ const HelperCat: React.FC<HelperCatProps> = ({ suggestions }) => {
   );
 };
 
-const TooltipContent = styled('div')({
-  padding: '16px',
-  fontSize: '16px',
+const TooltipContent = styled("div")({
+  padding: "16px",
+  fontSize: "16px",
 });
 
 export { HelperCat };

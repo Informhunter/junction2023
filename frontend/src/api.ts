@@ -9,7 +9,7 @@ export async function getRandomNumber() {
   );
 }
 
-interface Suggestion {
+export interface Suggestion {
   text: string;
 }
 

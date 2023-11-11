@@ -1,10 +1,5 @@
 name: build-and-deploy-backend
-on:
-  push:
-    branches:
-      - master
-    paths:
-      - 'backend/**'
+on: workflow_dispatch
 jobs:
     build-and-deploy:
       runs-on: ubuntu-latest

@@ -27,7 +27,7 @@ const Editor: React.FC = () => {
       <DiaryFormContainer>
         <StyledTextareaAutosize
           ref={editorRef}
-          placeholder="Please, describe your problem..."
+          placeholder="Please, describe your problem in detail..."
         />
         {isFetching && <StyledLinearProgress />}
         <SubmitButton variant="contained" onClick={() => setSubmitted(true)}>

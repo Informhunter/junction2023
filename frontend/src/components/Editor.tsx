@@ -6,7 +6,7 @@ import {
   TextareaAutosize,
   styled,
 } from "@mui/material";
-import { sendNote } from "./api";
+import { sendNote } from "../api";
 import { HelperCat } from "./HelperCat";
 
 const Editor: React.FC = () => {

@@ -1,6 +1,6 @@
 import React from 'react';
-import { Authors } from '../Authors';
-import { RandomNumber } from '../RandomNumber';
+import { Authors } from '../components/Authors';
+import { RandomNumber } from '../components/RandomNumber';
 
 const AuthorsPage: React.FC = () => {
   return (

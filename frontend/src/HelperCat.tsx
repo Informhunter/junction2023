@@ -13,6 +13,18 @@ const HelperCat: React.FC<HelperCatProps> = ({ suggestions }) => {
 
   return (
     <Tooltip
+      arrow
+      componentsProps={{
+        tooltip: {
+          sx: {
+            borderRadius: '16px',
+            bgcolor: 'gray',
+            '& .MuiTooltip-arrow': {
+              color: 'gray',
+            },
+          },
+        },
+      }}
       title={
         <TooltipContent>
           <Typography>

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { fetchRandomNumber } from './api';
+import { getRandomNumber } from './api';
 
 function RandomNumber() {
-  const [randomNumber, setRandomNumber] = useState(undefined);
+  const [randomNumber, setRandomNumber] = useState<number | undefined>(undefined);
   
   useEffect(() => {
-    fetchRandomNumber().then(({ number }) => setRandomNumber(number));
+    getRandomNumber().then(({ data }) => setRandomNumber(data.number));
   }, []);
 
   return (

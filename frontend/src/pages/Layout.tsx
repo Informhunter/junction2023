@@ -38,12 +38,12 @@ const Header: React.FC = () => {
 
 const Layout: React.FC = () => {
   return (
-    <div>
+    <>
       <Header />
       <OutletContainer>
         <Outlet />
       </OutletContainer>
-    </div>
+    </>
   );
 };
 

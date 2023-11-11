@@ -92,7 +92,7 @@ const HelperCat: React.FC<HelperCatProps> = ({ suggestions }) => {
         sx={{
           height: 170,
           width: hasSuggestion ? 200 : 250,
-          marginTop: "50px",
+          marginTop: "8px",
         }}
         alt="Сat assistant"
         src={hasSuggestion ? activeCat : sleepCat}

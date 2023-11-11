@@ -23,7 +23,14 @@ deploy-frontend: build-frontend
 	gcloud compute url-maps invalidate-cdn-cache $(LOAD_BALANCER_NAME) --path "/*" --async
 
 
-deploy-backend:
+build-backend:
+	echo "Building backend..."
+	export DOCKER_DEFAULT_PLATFORM=linux/amd64 && \
+	cd backend && \
+	make build
+
+
+deploy-backend: build-backend
 	echo "Deploying backend..."
 	docker tag $(BACKEND_IMAGE_LOCAL) $(BACKEND_IMAGE_REMOTE)
 	docker push $(BACKEND_IMAGE_REMOTE)

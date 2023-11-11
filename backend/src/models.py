@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
 
-class DummyRandomResponse(BaseModel):
-    number: float
+class HowtoSuggestion(BaseModel):
+    paragraph_id: int
+    text: str

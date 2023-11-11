@@ -7,6 +7,6 @@ client = TestClient(app)
 
 
 def test_dummy():
-    response = client.get('/random')
+    response = client.get('/healthcheck')
     assert response.status_code == 200
     assert isinstance(response.json()['number'], float)

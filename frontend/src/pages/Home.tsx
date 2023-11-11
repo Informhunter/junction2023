@@ -1,14 +1,10 @@
 import React from "react";
-import { RandomNumber } from "../RandomNumber";
-import { Core } from "../Core";
+import { Editor } from "../Editor";
 
 const HomePage: React.FC = () => {
-  return (
-    <React.Fragment>
-      <RandomNumber />
-      <Core />
-    </React.Fragment>
-  );
+  return <Editor />;
 };
 
-export { HomePage }
+
+
+export { HomePage };

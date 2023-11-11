@@ -1,8 +1,10 @@
 import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { Routes, Route, Outlet, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { HomePage } from "./pages/Home";
 import { AuthorsPage } from "./pages/Authors";
+import { Layout } from "./pages/Layout";
+import "./reset.css";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -11,35 +13,6 @@ const queryClient = new QueryClient({
     },
   },
 });
-
-const ROUTES = [
-  {
-    link: '/',
-    label: 'Home',
-  },
-  {
-    link: '/authors',
-    label: 'Authors',
-  }
-];
-
-const Layout: React.FC = () => {
-  return (
-    <React.Fragment>
-      <nav>
-        <ul>
-          {ROUTES.map(route => (
-            <li key={route.link}>
-              <Link to={route.link}>{route.label}</Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
-      <hr />
-      <Outlet />
-    </React.Fragment>
-  );
-};
 
 const App: React.FC = () => {
   return (

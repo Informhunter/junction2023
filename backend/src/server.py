@@ -8,6 +8,7 @@ from fastapi import Body, FastAPI
 from src.llm.extraction_chain import EXTRACTION_CHAIN
 from src.llm.severity_level import SeverityLevel
 from src.models import HowtoSuggestion
+from src.retriever import search_wikihow
 
 
 app = FastAPI()
@@ -35,8 +36,15 @@ async def _get_suggestions_with_llm(note: str) -> list[HowtoSuggestion]:
     text = paragraphs[paragraph_id]
 
     response = await EXTRACTION_CHAIN.ainvoke(text)
-    suggestions = (HowtoSuggestion(paragraph_id=paragraph_id, **suggestion) for suggestion in response)
-    return list(_filter_suggestions(suggestions))
+    suggestions = (
+        HowtoSuggestion(
+            paragraph_id=paragraph_id,
+            search_results=await search_wikihow(suggestion['text'])[:3],
+            **suggestion,
+        ) for suggestion in response)
+
+    suggestions = _filter_suggestions(suggestions)
+    return list(suggestions)
 
 
 def _filter_suggestions(suggestions: Iterable[HowtoSuggestion]) -> Generator[HowtoSuggestion, None, None]:

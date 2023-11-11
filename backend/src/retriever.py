@@ -1,20 +1,14 @@
 import re
-from dataclasses import dataclass
 from urllib.parse import urlencode
 
 import aiohttp
 from bs4 import BeautifulSoup
 from bs4.element import Tag
 
+from src.models import WikihowSearchResult
+
 
 _BACKGROUND_IMAGE_URL_REGEX = re.compile(r'url\((.*)\)')
-
-
-@dataclass
-class WikihowSearchResult:
-    url: str
-    title: str
-    thumbnail_url: str | None
 
 
 def extract_wikihow_result(result_tag_block: Tag) -> WikihowSearchResult:

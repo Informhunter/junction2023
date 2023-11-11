@@ -1,4 +1,4 @@
-name: build-and-deploy-backend
+name: build-and-deploy-frontend
 on: workflow_dispatch
 jobs:
     build-and-deploy:
@@ -14,5 +14,5 @@ jobs:
           apt update
           apt install nodejs npm -y
           echo $GCP_SERVICE_ACCOUNT_KEY | base64 -d > key.json
-          export GOOGLE_APPLICATION_CREDENTIALS=$PWD/key.json
+          gcloud auth activate-service-account --key-file=key.json
           make deploy-frontend

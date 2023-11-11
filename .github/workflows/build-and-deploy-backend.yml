@@ -1,0 +1,21 @@
+name: build-and-deploy-backend
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'backend/**'
+jobs:
+    build-and-deploy:
+      runs-on: ubuntu-latest
+      container: google/cloud-sdk:latest
+      steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: build-and-deploy
+        env:
+          GCP_SERVICE_ACCOUNT_KEY: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+        run: |
+          echo $GCP_SERVICE_ACCOUNT_KEY | base64 -d > key.json
+          export GOOGLE_APPLICATION_CREDENTIALS=$PWD/key.json
+          make deploy-backend

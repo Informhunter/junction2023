@@ -7,6 +7,7 @@ BACKEND_IMAGE_REMOTE=europe-west1-docker.pkg.dev/junction2023-diary/junction2023
 BACKEND_SERVICE_NAME=junction2023-backend
 LOAD_BALANCER_NAME=junction2023-url-map
 REGION=europe-west1
+GCP_PROJECT=junction2023-diary
 
 
 build-frontend:
@@ -20,7 +21,7 @@ deploy-frontend: build-frontend
 	cd frontend && gsutil rsync  -d -r build/ gs://$(FRONTEND_BUCKET)
 	echo "Deployed frontend to gs://$(FRONTEND_BUCKET)"
 	echo "Invalidating cache..."
-	gcloud compute url-maps invalidate-cdn-cache $(LOAD_BALANCER_NAME) --path "/*" --async
+	gcloud compute url-maps invalidate-cdn-cache $(LOAD_BALANCER_NAME) --path "/*" --async --project $(GCP_PROJECT)
 
 
 build-backend:
@@ -34,4 +35,4 @@ deploy-backend: build-backend
 	echo "Deploying backend..."
 	docker tag $(BACKEND_IMAGE_LOCAL) $(BACKEND_IMAGE_REMOTE)
 	docker push $(BACKEND_IMAGE_REMOTE)
-	gcloud run deploy $(BACKEND_SERVICE_NAME) --image $(BACKEND_IMAGE_REMOTE) --region $(REGION)
+	gcloud run deploy $(BACKEND_SERVICE_NAME) --image $(BACKEND_IMAGE_REMOTE) --region $(REGION) --project $(GCP_PROJECT)

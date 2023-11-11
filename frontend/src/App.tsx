@@ -1,4 +1,5 @@
 import React from "react";
+import './reset.css';
 import { QueryClient, QueryClientProvider } from "react-query";
 import { Routes, Route, Outlet, Link } from "react-router-dom";
 import { HomePage } from "./pages/Home";

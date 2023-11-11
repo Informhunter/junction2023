@@ -31,6 +31,12 @@ resource "google_storage_bucket_iam_member" "junction2023-frontend-deploy" {
   member = google_service_account.junction2023-deploy.member
 }
 
+resource "google_project_iam_member" "junction2023-deploy-invalidate-cache" {
+  project = var.project
+  role    = google_project_iam_custom_role.cdn-cache-invalidator.name
+  member  = google_service_account.junction2023-deploy.member
+}
+
 resource "google_service_account_iam_member" "junction2023-backend-deploy-sa" {
   role               = "roles/iam.serviceAccountUser"
   service_account_id = google_service_account.backend-sa.id

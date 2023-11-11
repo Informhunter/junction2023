@@ -12,5 +12,6 @@ jobs:
           GCP_SERVICE_ACCOUNT_KEY: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
         run: |
           echo $GCP_SERVICE_ACCOUNT_KEY | base64 -d > key.json
-          export GOOGLE_APPLICATION_CREDENTIALS=$PWD/key.json
+          gcloud auth activate-service-account --key-file=key.json
+          gcloud auth configure-docker europe-west1-docker.pkg.dev
           make deploy-backend

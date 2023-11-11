@@ -5,8 +5,12 @@ import numpy as np
 from fastapi import Body, FastAPI
 
 from src.llm.extraction_chain import EXTRACTION_CHAIN
+from src.llm.chit_chat import CHIT_CHAT_CHAIN
 from src.llm.severity_level import SeverityLevel
-from src.models import HowtoSuggestion
+from src.models import (
+    HowtoSuggestion,
+    WikihowSearchResult,
+)
 from src.retriever import search_wikihow
 
 
@@ -22,13 +26,16 @@ async def random():
 
 @app.post('/note')
 async def suggest(note: Annotated[str, Body()]) -> list[HowtoSuggestion]:
-    return await _get_suggestions_with_llm(note)
-
-
-async def _get_suggestions_with_llm(note: str) -> list[HowtoSuggestion]:
     if not note:
         return []
 
+    suggestions = await _get_suggestions_with_llm(note)
+
+    if len(suggestions) == 0:
+        return await _get_chit_chat_suggestion(note)
+
+
+async def _get_suggestions_with_llm(note: str) -> list[HowtoSuggestion]:
     paragraphs = re.split(r'\n{2,}', note.strip())
 
     # TODO: not only last paragraph
@@ -75,3 +82,25 @@ def _filter_suggestions(suggestions: Iterable[HowtoSuggestion]) -> Iterable[Howt
 
 def _sort_suggestions(suggestions: Iterable[HowtoSuggestion]) -> list[HowtoSuggestion]:
     return sorted(suggestions, key=lambda suggestion: suggestion.severity_level, reverse=True)
+
+async def _get_chit_chat_suggestion(note: str) -> list[HowtoSuggestion]:
+    paragraphs = re.split(r'\n{2,}', note.strip())
+    chit_chat = await _generate_chit_chat_suggestion(paragraphs)
+    return [
+        HowtoSuggestion(
+            paragraph_id=len(paragraphs) - 1,
+            text=paragraphs[-1],
+            search_result=WikihowSearchResult(
+                title=chit_chat,
+                url='',
+                thumbnail_url=None,
+            ),
+            severity_level=SeverityLevel.NO_PROBLEM,
+        ),
+    ]
+
+async def _generate_chit_chat_suggestion(paragraphs: list[str]) -> str:
+    response = await CHIT_CHAT_CHAIN.ainvoke(paragraphs[-1])
+    if response:
+        return response.content
+    return ''

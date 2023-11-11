@@ -3,24 +3,12 @@ from typing import Annotated
 
 import numpy as np
 from fastapi import Body, FastAPI
-from starlette.middleware.cors import CORSMiddleware
 
 from src.llm.extraction_chain import EXTRACTION_CHAIN
 from src.models import HowtoSuggestion
 
 
 app = FastAPI()
-origins = [
-    'http://localhost:3000',
-]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=['*'],
-    allow_headers=['*'],
-)
 
 
 @app.get('/healthcheck')

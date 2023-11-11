@@ -2,12 +2,12 @@ import React, { useRef, useState } from "react";
 import { useQuery } from "react-query";
 import {
   Button,
-  Typography,
   LinearProgress,
   TextareaAutosize,
   styled,
 } from "@mui/material";
 import { sendNote } from "./api";
+import { HelperCat } from "./HelperCat";
 
 const Editor: React.FC = () => {
   const editorRef = useRef<HTMLTextAreaElement>(null);
@@ -23,24 +23,31 @@ const Editor: React.FC = () => {
   );
 
   return (
-    <React.Fragment>
-      <StyledTextareaAutosize
-        ref={editorRef}
-        placeholder="Please, describe your problem..."
-      />
-      {isFetching && <StyledLinearProgress />}
-      {!isFetching && isSuccess && (
-        <React.Fragment>
-          <Typography>This can help you!</Typography>
-          <code>{JSON.stringify(data)}</code>
-        </React.Fragment>
-      )}
-      <SubmitButton variant="contained" onClick={() => setSubmitted(true)}>
-        Submit
-      </SubmitButton>
-    </React.Fragment>
+    <Container>
+      <DiaryFormContainer>
+        <StyledTextareaAutosize
+          ref={editorRef}
+          placeholder="Please, describe your problem..."
+        />
+        {isFetching && <StyledLinearProgress />}
+        <SubmitButton variant="contained" onClick={() => setSubmitted(true)}>
+          Submit
+        </SubmitButton>
+      </DiaryFormContainer>
+      <HelperCat suggestions={!isFetching && isSuccess ? data : undefined} />
+    </Container>
   );
 };
+
+const Container = styled("div")({
+  display: "flex",
+  justifyContent: "space-around",
+  width: "100%",
+});
+
+const DiaryFormContainer = styled("div")({
+  width: "70%",
+});
 
 const StyledTextareaAutosize = styled(TextareaAutosize)({
   width: "100%",

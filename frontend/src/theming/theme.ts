@@ -4,6 +4,8 @@ interface Colors {
   orange: string;
   blue: string;
   gray: string;
+  red: string;
+  white: string;
 }
 
 declare module "@mui/material/styles" {
@@ -16,6 +18,8 @@ const theme = createTheme({
     orange: "#ef856e",
     blue: "#30699d",
     gray: "#343540",
+    red: '#f02637',
+    white: '#fbfbfb',
   },
 });
 

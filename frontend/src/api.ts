@@ -10,7 +10,13 @@ export async function getRandomNumber() {
 }
 
 export interface Suggestion {
+  paragraph_id: number;
+  severity_level: 'low' | 'moderate' | 'critical';
   text: string;
+  search_result: {
+    url: string;
+    title: string;
+  }
 }
 
 export async function sendNote(note: string) {

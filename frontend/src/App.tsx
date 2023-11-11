@@ -3,7 +3,13 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { Crew } from "./Crew";
 import { RandomNumber } from "./RandomNumber";
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    }
+  }
+})
 
 function App() {
   return (

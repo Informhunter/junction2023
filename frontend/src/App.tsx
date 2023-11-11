@@ -1,25 +1,57 @@
 import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { Typography } from "@mui/material";
-import { Authors } from "./Authors";
-import { RandomNumber } from "./RandomNumber";
+import { Routes, Route, Outlet, Link } from "react-router-dom";
+import { HomePage } from "./pages/Home";
+import { AuthorsPage } from "./pages/Authors";
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-    }
+    },
+  },
+});
+
+const ROUTES = [
+  {
+    link: '/',
+    label: 'Home',
+  },
+  {
+    link: '/authors',
+    label: 'Authors',
   }
-})
+];
+
+const Layout: React.FC = () => {
+  return (
+    <React.Fragment>
+      <nav>
+        <ul>
+          {ROUTES.map(route => (
+            <li key={route.link}>
+              <Link to={route.link}>{route.label}</Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <hr />
+      <Outlet />
+    </React.Fragment>
+  );
+};
 
 const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <Typography variant='h2'>Junction 2023!</Typography>
-      <Authors />
-      <RandomNumber />
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />} />
+          <Route path="authors" element={<AuthorsPage />} />
+        </Route>
+      </Routes>
     </QueryClientProvider>
   );
-}
+};
 
 export { App };

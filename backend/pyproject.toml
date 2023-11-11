@@ -15,6 +15,7 @@ aiohttp = "^3.8.6"
 langchain = "^0.0.334"
 openai = "^1.2.3"
 tiktoken = "^0.5.1"
+beautifulsoup4 = "^4.12.2"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7.3.2"

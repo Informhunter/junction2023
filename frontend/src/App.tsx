@@ -4,7 +4,13 @@ import { Typography } from "@mui/material";
 import { Authors } from "./Authors";
 import { RandomNumber } from "./RandomNumber";
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    }
+  }
+})
 
 const App: React.FC = () => {
   return (

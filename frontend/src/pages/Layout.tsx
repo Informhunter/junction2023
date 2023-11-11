@@ -41,7 +41,9 @@ const Layout: React.FC = () => {
     <div>
       <Header />
       <hr />
-      <Outlet />
+      <OutletContainer>
+        <Outlet />
+      </OutletContainer>
     </div>
   );
 };
@@ -55,6 +57,13 @@ const HeaderContainer = styled('div')({
 const NavItem = styled('li')({
   display: "inline",
   marginRight: "8px",
+});
+
+const OutletContainer = styled('div')({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  padding: "30px",
 });
 
 export { Layout };

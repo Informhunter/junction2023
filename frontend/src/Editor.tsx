@@ -5,8 +5,7 @@ const Editor: React.FC = () => {
   return (
     <React.Fragment>
       <StyledTextareaAutosize placeholder="Please, describe your problem..."/>
-      <br />
-      <Button variant="contained">Submit</Button>
+      <SubmitButton variant="contained">Submit</SubmitButton>
     </React.Fragment>
   );
 };
@@ -14,6 +13,10 @@ const Editor: React.FC = () => {
 const StyledTextareaAutosize = styled(TextareaAutosize)({
   width: '80%',
   minHeight: '300px',
+});
+
+const SubmitButton = styled(Button)({
+  marginTop: '8px',
 });
 
 export { Editor };

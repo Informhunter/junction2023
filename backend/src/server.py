@@ -17,7 +17,7 @@ _N_SUGGESTIONS_TO_RETURN = 3
 
 @app.get('/healthcheck')
 async def random():
-    return {'number': np.random.rand()}
+    return {'number': np.random.rand() * 100}
 
 
 @app.post('/note')

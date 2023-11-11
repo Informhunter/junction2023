@@ -1,60 +1,60 @@
-import os
-
-from langchain.chat_models import ChatOpenAI
 from langchain.output_parsers.openai_functions import JsonKeyOutputFunctionsParser
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema.runnable import RunnablePassthrough
 
+from src.llm.openai import OPENAI_MODEL
+from src.llm.severity_level import SeverityLevel
 
-OPENAI_SECRET_KEY = os.environ.get('OPENAI_SECRET_KEY')
-OPENAI_ORGANISATION_ID = os.environ.get('OPENAI_ORGANISATION_ID')
 
-EXTRACTION_INSTRUCTION = """
+_EXTRACTION_INSTRUCTION = f"""
 Given a sentence of a diary, identify what the person would benefit from getting information about.
-Reformulate in a way "how to <problem>".
+For each identified item reformulate it in a way "how to <item>" and assign severity level according to the schema:
+```
+{SeverityLevel.to_markdown_table()}
+```
 """.strip()
 
 
-EXTRACTION_PROMPT_TEMPLATE = ChatPromptTemplate.from_messages(
+# TODO: add few-shot examples
+_EXTRACTION_PROMPT_TEMPLATE = ChatPromptTemplate.from_messages(
     [
-        ('human', EXTRACTION_INSTRUCTION),
+        ('human', _EXTRACTION_INSTRUCTION),
         ('human', 'Diary:\n```{note}```'),
     ],
 )
 
-EXTRACTION_FUNCTION = {
-    'name': 'howto_problems',
-    'description': 'problems extracted from the user diary notes but in format suitable for search in HowTo wiki',
+_EXTRACTION_FUNCTION = {
+    'name': 'howto_issues',
+    'description': 'issues extracted from the user diary notes but in format '
+                   'suitable for search in HowTo wiki along with severity level',
     'parameters': {
         'type': 'object',
         'properties': {
-            'problems': {
+            'issues': {
                 'type': 'array',
                 'items': {
-                    'type': 'string',
-                    'description': "Should be in format: 'how to <reformulated problem>'",
+                    'type': 'object',
+                    'properties': {
+                        'text': {
+                            'type': 'string',
+                            'description': "Should be in format: 'how to <reformulated issue>'"
+                        },
+                        'severity_level': {
+                            'type': 'string',
+                            'enum':  [level.value for level in SeverityLevel]
+                        },
+                    },
+                    'required': ['text', 'severity_level']
                 },
             },
         },
-        'required': ['problems'],
+        'required': ['issues'],
     },
 }
 
-
-MODEL_NAME = 'gpt-3.5-turbo'
-
-MODEL = ChatOpenAI(
-    model_name=MODEL_NAME,
-    temperature=0,
-    max_tokens=2000,
-    openai_organization=OPENAI_ORGANISATION_ID,
-    openai_api_key=OPENAI_SECRET_KEY,
-)
-
-
 EXTRACTION_CHAIN = (
     {'note': RunnablePassthrough()}
-    | EXTRACTION_PROMPT_TEMPLATE
-    | MODEL.bind(function_call={'name': EXTRACTION_FUNCTION['name']}, functions=[EXTRACTION_FUNCTION])
-    | JsonKeyOutputFunctionsParser(key_name='problems')
+    | _EXTRACTION_PROMPT_TEMPLATE
+    | OPENAI_MODEL.bind(function_call={'name': _EXTRACTION_FUNCTION['name']}, functions=[_EXTRACTION_FUNCTION])
+    | JsonKeyOutputFunctionsParser(key_name='issues')
 )

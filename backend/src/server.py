@@ -41,7 +41,8 @@ async def _get_suggestions_with_llm(note: str) -> list[HowtoSuggestion]:
             paragraph_id=paragraph_id,
             search_results=await search_wikihow(suggestion['text'])[:3],
             **suggestion,
-        ) for suggestion in response)
+        ) for suggestion in response
+    )
 
     suggestions = _filter_suggestions(suggestions)
     return list(suggestions)

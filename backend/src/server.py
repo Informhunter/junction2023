@@ -47,7 +47,7 @@ async def _get_suggestions_with_llm(note: str) -> list[HowtoSuggestion]:
 
 async def _parse_llm_response(response: Sequence[dict[str, str]], paragraph_id: int) -> list[HowtoSuggestion]:
     suggestions = []
-    for i, output in enumerate(response):
+    for output in response:
         search_result = None
         wikihow_results = await search_wikihow(output['text'])
         if wikihow_results:

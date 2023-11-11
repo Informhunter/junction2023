@@ -13,7 +13,7 @@ const Editor: React.FC = () => {
   const editorRef = useRef<HTMLTextAreaElement>(null);
   const [isSubmitted, setSubmitted] = useState(false);
 
-  const { isLoading, isSuccess, data } = useQuery(
+  const { isFetching, isSuccess, data } = useQuery(
     "sendNote",
     () => sendNote(editorRef.current?.value as string),
     {
@@ -22,14 +22,16 @@ const Editor: React.FC = () => {
     }
   );
 
+  console.log('test', isFetching);
+
   return (
     <React.Fragment>
       <StyledTextareaAutosize
         ref={editorRef}
         placeholder="Please, describe your problem..."
       />
-      {isLoading && <StyledLinearProgress />}
-      {isSuccess && (
+      {isFetching && <StyledLinearProgress />}
+      {!isFetching && isSuccess && (
         <React.Fragment>
           <Typography>This can help you!</Typography>
           <code>{JSON.stringify(data)}</code>

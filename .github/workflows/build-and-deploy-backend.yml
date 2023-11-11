@@ -3,7 +3,7 @@ on: workflow_dispatch
 jobs:
     build-and-deploy:
       runs-on: ubuntu-latest
-      container: google/cloud-sdk:latest
+      container: google/cloud-sdk:slim
       steps:
       - name: checkout
         uses: actions/checkout@v4

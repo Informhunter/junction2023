@@ -1,4 +1,4 @@
-.PHONY: deploy-frontend deploy-backend
+.PHONY: build-frontend build-backend deploy-frontend deploy-backend
 
 FRONTEND_BUCKET=junction2023-diary-static
 

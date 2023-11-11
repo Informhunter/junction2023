@@ -2,7 +2,7 @@
 
 FRONTEND_BUCKET=junction2023-diary-static
 
-BACKEND_IMAGE_LOCAL=backend:latest
+BACKEND_IMAGE_LOCAL=junction2023-backend:latest
 BACKEND_IMAGE_REMOTE=europe-west1-docker.pkg.dev/junction2023-diary/junction2023-backend/backend:latest
 BACKEND_SERVICE_NAME=junction2023-backend
 LOAD_BALANCER_NAME=junction2023-url-map

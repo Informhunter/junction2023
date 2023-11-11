@@ -9,6 +9,25 @@ resource "google_cloud_run_v2_service" "junction2023-backend" {
       ports {
         container_port = 8080
       }
+      env {
+        name = "OPENAI_ORGANIZATION_ID"
+        value_source {
+          secret_key_ref {
+            secret = "openai-organization-id"
+            version = "latest"
+          }
+        }
+      }
+
+      env {
+        name = "OPENAI_SECRET_KEY"
+        value_source {
+          secret_key_ref {
+            secret = "openai-secret-key"
+            version = "latest"
+          }
+        }
+      }
     }
   }
 }

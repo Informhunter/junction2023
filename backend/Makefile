@@ -7,7 +7,7 @@ export DOCKER_CLI_EXPERIMENTAL := enabled
 CODE ?= src tests
 DOCKER_WORKDIR := /app
 
-export REPO ?= backend
+export REPO ?= junction2023-backend
 export TAG ?= latest
 
 .PHONY: help test init lint shell pretty

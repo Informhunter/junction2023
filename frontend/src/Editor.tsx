@@ -1,22 +1,59 @@
-import React from "react";
-import { Button, TextareaAutosize, styled } from "@mui/material";
+import React, { useRef, useState } from "react";
+import { useQuery } from "react-query";
+import {
+  Button,
+  Typography,
+  LinearProgress,
+  TextareaAutosize,
+  styled,
+} from "@mui/material";
+import { sendNote } from "./api";
 
 const Editor: React.FC = () => {
+  const editorRef = useRef<HTMLTextAreaElement>(null);
+  const [isSubmitted, setSubmitted] = useState(false);
+
+  const { isFetching, isSuccess, data } = useQuery(
+    "sendNote",
+    () => sendNote(editorRef.current?.value as string),
+    {
+      enabled: !!editorRef.current?.value && isSubmitted,
+      onSuccess: () => setSubmitted(false),
+    }
+  );
+
   return (
     <React.Fragment>
-      <StyledTextareaAutosize placeholder="Please, describe your problem..."/>
-      <SubmitButton variant="contained">Submit</SubmitButton>
+      <StyledTextareaAutosize
+        ref={editorRef}
+        placeholder="Please, describe your problem..."
+      />
+      {isFetching && <StyledLinearProgress />}
+      {!isFetching && isSuccess && (
+        <React.Fragment>
+          <Typography>This can help you!</Typography>
+          <code>{JSON.stringify(data)}</code>
+        </React.Fragment>
+      )}
+      <SubmitButton variant="contained" onClick={() => setSubmitted(true)}>
+        Submit
+      </SubmitButton>
     </React.Fragment>
   );
 };
 
 const StyledTextareaAutosize = styled(TextareaAutosize)({
-  width: '80%',
-  minHeight: '300px',
+  width: "100%",
+  minHeight: "300px",
+});
+
+const StyledLinearProgress = styled(LinearProgress)({
+  width: "100%",
+  marginTop: "8px",
 });
 
 const SubmitButton = styled(Button)({
-  marginTop: '8px',
+  marginTop: "8px",
 });
 
 export { Editor };

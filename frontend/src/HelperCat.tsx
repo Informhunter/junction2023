@@ -29,8 +29,8 @@ const HelperCat: React.FC<HelperCatProps> = ({ suggestions }) => {
         <TooltipContent>
           <Typography>
             {hasSuggestion
-              ? "This can help you!"
-              : "I'll help you as soon as you share your feelings to me 🙏"}
+              ? "This can help you! 😊"
+              : "I'll help you as soon as you share your feelings with me 🙏"}
           </Typography>
           <code>{JSON.stringify(suggestions, null, "\t")}</code>
         </TooltipContent>

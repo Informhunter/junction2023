@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography } from "@mui/material";
 import { useQuery } from "react-query";
-import { getRandomNumber } from "./api";
+import { getRandomNumber } from "../api";
 
 const RandomNumber: React.FC = () => {
   const { isSuccess, data } = useQuery("randomNumber", getRandomNumber);

@@ -1,8 +1,8 @@
 import React from "react";
 import { Box, Tooltip, Typography, styled } from "@mui/material";
-import activeCat from "./assets/cat-active.png";
-import sleepCat from "./assets/cat-sleep.png";
-import { Suggestion } from "./api";
+import activeCat from "../assets/cat-active.png";
+import sleepCat from "../assets/cat-sleep.png";
+import { Suggestion } from "../api";
 
 interface HelperCatProps {
   suggestions: Suggestion[] | undefined;

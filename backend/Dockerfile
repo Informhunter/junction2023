@@ -31,4 +31,4 @@ RUN \
     && find . -type f -name "*.py[co]" -delete -or -type d -name "__pycache__" -delete
 
 EXPOSE 8080
-CMD ["uvicorn", "src.server:app", "--host", "0.0.0.0", "--port", "8080"]
+CMD ["uvicorn", "src.server:app", "--host", "0.0.0.0", "--port", "8080", "--root-path", "/api"]

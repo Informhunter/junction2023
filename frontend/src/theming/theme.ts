@@ -3,6 +3,7 @@ import { createTheme } from "@mui/material/styles";
 interface Colors {
   orange: string;
   blue: string;
+  gray: string;
 }
 
 declare module "@mui/material/styles" {
@@ -14,6 +15,7 @@ const theme = createTheme({
   palette: {
     orange: "#ef856e",
     blue: "#30699d",
+    gray: "#343540",
   },
 });
 

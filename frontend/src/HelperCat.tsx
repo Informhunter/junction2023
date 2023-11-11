@@ -13,12 +13,24 @@ const HelperCat: React.FC<HelperCatProps> = ({ suggestions }) => {
 
   return (
     <Tooltip
+      arrow
+      componentsProps={{
+        tooltip: {
+          sx: {
+            borderRadius: '16px',
+            bgcolor: 'gray',
+            '& .MuiTooltip-arrow': {
+              color: 'gray',
+            },
+          },
+        },
+      }}
       title={
         <TooltipContent>
           <Typography>
             {hasSuggestion
-              ? "This can help you!"
-              : "I'll help you as soon as you share your feelings to me 🙏"}
+              ? "This can help you! 😊"
+              : "I'll help you as soon as you share your feelings with me 🙏"}
           </Typography>
           <code>{JSON.stringify(suggestions, null, "\t")}</code>
         </TooltipContent>

@@ -8,6 +8,7 @@ resource "google_cloud_run_v2_service" "junction2023-backend" {
     service_account = google_service_account.backend-sa.email
 
     containers {
+
       image = "europe-west1-docker.pkg.dev/junction2023-diary/junction2023-backend/backend:latest"
 
       ports {

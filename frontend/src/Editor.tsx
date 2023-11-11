@@ -49,18 +49,31 @@ const DiaryFormContainer = styled("div")({
   width: "70%",
 });
 
-const StyledTextareaAutosize = styled(TextareaAutosize)({
+const StyledTextareaAutosize = styled(TextareaAutosize)(({ theme: { palette } }) => ({
   width: "100%",
   minHeight: "300px",
-});
+  padding: '16px',
+  border: `1px solid ${palette.blue}`,
+  borderRadius: '4px',
+  fontSize: '16px',
+
+  '&:focus': {
+    border: `1px solid ${palette.orange}`,
+  }
+}));
 
 const StyledLinearProgress = styled(LinearProgress)({
   width: "100%",
   marginTop: "8px",
 });
 
-const SubmitButton = styled(Button)({
+const SubmitButton = styled(Button)(({ theme: { palette } }) => ({
   marginTop: "8px",
-});
+  backgroundColor: palette.orange,
+
+  "&:hover": {
+    backgroundColor: palette.orange,
+  },
+}));
 
 export { Editor };

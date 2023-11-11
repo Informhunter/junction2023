@@ -5,6 +5,4 @@ const HomePage: React.FC = () => {
   return <Editor />;
 };
 
-
-
 export { HomePage };

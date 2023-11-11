@@ -1,16 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { getRandomNumber } from './api';
+import React from "react";
+import { useQuery } from "react-query";
+import { getRandomNumber } from "./api";
 
 function RandomNumber() {
-  const [randomNumber, setRandomNumber] = useState<number | undefined>(undefined);
-  
-  useEffect(() => {
-    getRandomNumber().then(({ data }) => setRandomNumber(data.number));
-  }, []);
+  const { isSuccess, data } = useQuery("randomNumber", getRandomNumber);
 
-  return (
-    <h2>Random number: {randomNumber}</h2>
-  )
-};
+  return <h2>Random number: {isSuccess ? data.number : "Loading..."}</h2>;
+}
 
 export { RandomNumber };

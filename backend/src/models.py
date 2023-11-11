@@ -13,4 +13,4 @@ class HowtoSuggestion(BaseModel):
     paragraph_id: int
     severity_level: SeverityLevel
     text: str
-    search_results: list[WikihowSearchResult]
+    search_result: WikihowSearchResult

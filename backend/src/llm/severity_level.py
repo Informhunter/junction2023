@@ -2,15 +2,17 @@ from enum import Enum
 
 
 class SeverityLevel(Enum):
-    def __new__(cls, value: str, description: str, examples: list[str]):
+    def __new__(cls, value: str, ordinal: int, description: str, examples: list[str]):
         obj = object.__new__(cls)
         obj._value_ = value
+        obj.ordinal = ordinal
         obj.description = description
         obj.examples = examples
         return obj
 
     NO_PROBLEM = (
         'no_problem',
+        1,
         "Trivial issues or wishes with no negative impact on the individual's emotional or physical well-being.",
         [
             'Wanting to try a new ice cream flavor',
@@ -21,6 +23,7 @@ class SeverityLevel(Enum):
     )
     LOW = (
         'low',
+        2,
         'Minor everyday problems that are slightly bothersome '
         'but manageable and do not significantly affect well-being.',
         [
@@ -30,6 +33,7 @@ class SeverityLevel(Enum):
     )
     MODERATE = (
         'moderate',
+        3,
         'Issues that have a noticeable negative effect on well-being, '
         'may require effort to resolve, and can cause moderate distress.',
         [
@@ -41,6 +45,7 @@ class SeverityLevel(Enum):
     )
     CRITICAL = (
         'critical',
+        4,
         'Serious, urgent problems that pose a significant risk to life or well-being, '
         'require immediate intervention, and can include mental health crises.',
         [
@@ -50,6 +55,11 @@ class SeverityLevel(Enum):
             'Suffering from a significant loss or intense grieving',
         ],
     )
+
+    def __lt__(self, other: 'SeverityLevel'):
+        if isinstance(other, self.__class__):
+            return self.ordinal < other.ordinal
+        raise NotImplementedError
 
     @classmethod
     def to_markdown_table(cls):

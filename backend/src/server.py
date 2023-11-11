@@ -1,6 +1,5 @@
 import re
-from collections.abc import Iterable
-from typing import Annotated, Generator
+from typing import Annotated, Iterable, Sequence
 
 import numpy as np
 from fastapi import Body, FastAPI
@@ -12,6 +11,8 @@ from src.retriever import search_wikihow
 
 
 app = FastAPI()
+
+_N_SUGGESTIONS_TO_RETURN = 3
 
 
 @app.get('/healthcheck')
@@ -36,22 +37,42 @@ async def _get_suggestions_with_llm(note: str) -> list[HowtoSuggestion]:
     text = paragraphs[paragraph_id]
 
     response = await EXTRACTION_CHAIN.ainvoke(text)
-    suggestions = (
-        HowtoSuggestion(
-            paragraph_id=paragraph_id,
-            search_results=await search_wikihow(suggestion['text'])[:3],
-            **suggestion,
-        ) for suggestion in response
-    )
 
-    suggestions = _filter_suggestions(suggestions)
-    return list(suggestions)
+    suggestions = await _parse_llm_response(response, paragraph_id)
+
+    suggestions = _sort_suggestions(_filter_suggestions(suggestions))
+
+    return suggestions[:_N_SUGGESTIONS_TO_RETURN]
 
 
-def _filter_suggestions(suggestions: Iterable[HowtoSuggestion]) -> Generator[HowtoSuggestion, None, None]:
+async def _parse_llm_response(response: Sequence[dict[str, str]], paragraph_id: int) -> list[HowtoSuggestion]:
+    suggestions = []
+    for i, output in enumerate(response):
+        search_result = None
+        wikihow_results = await search_wikihow(output['text'])
+        if wikihow_results:
+            search_result = wikihow_results[0]
+
+        suggestions.append(
+            HowtoSuggestion(
+                paragraph_id=paragraph_id,
+                position=i,
+                search_result=search_result,
+                **output,
+            ),
+        )
+
+    return suggestions
+
+
+def _filter_suggestions(suggestions: Iterable[HowtoSuggestion]) -> Iterable[HowtoSuggestion]:
     for suggestion in suggestions:
         if (
             suggestion.text.lstrip().lower().startswith('how to')
             and suggestion.severity_level != SeverityLevel.NO_PROBLEM
         ):
             yield suggestion
+
+
+def _sort_suggestions(suggestions: Iterable[HowtoSuggestion]) -> list[HowtoSuggestion]:
+    return sorted(suggestions, key=lambda suggestion: suggestion.severity_level, reverse=True)

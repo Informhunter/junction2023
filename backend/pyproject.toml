@@ -11,6 +11,7 @@ fastapi = "^0.104.1"
 pydantic = "^2.4.2"
 numpy = "^1.26.1"
 uvicorn = {extras = ["standard"], version = "^0.23.2"}
+aiohttp = "^3.8.6"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7.3.2"

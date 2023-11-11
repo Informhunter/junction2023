@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Button, TextareaAutosize, styled } from "@mui/material";
-import logo from "./logo.png";
+import logo from "./assets/logo.png";
 
 const Core: React.FC = () => {
   return (

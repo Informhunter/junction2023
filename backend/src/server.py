@@ -56,7 +56,6 @@ async def _parse_llm_response(response: Sequence[dict[str, str]], paragraph_id: 
         suggestions.append(
             HowtoSuggestion(
                 paragraph_id=paragraph_id,
-                position=i,
                 search_result=search_result,
                 **output,
             ),

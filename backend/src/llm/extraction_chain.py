@@ -2,7 +2,7 @@ from langchain.output_parsers.openai_functions import JsonKeyOutputFunctionsPars
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema.runnable import RunnablePassthrough
 
-from src.llm.openai import OPENAI_MODEL
+from src.llm.openai import OPENAI_GPT4_MODEL
 from src.llm.severity_level import SeverityLevel
 
 
@@ -18,7 +18,7 @@ For each identified item reformulate it in a way "how to <item>" and assign seve
 # TODO: add few-shot examples
 _EXTRACTION_PROMPT_TEMPLATE = ChatPromptTemplate.from_messages(
     [
-        ('human', _EXTRACTION_INSTRUCTION),
+        ('system', _EXTRACTION_INSTRUCTION),
         ('human', 'Diary:\n```{note}```'),
     ],
 )
@@ -55,6 +55,6 @@ _EXTRACTION_FUNCTION = {
 EXTRACTION_CHAIN = (
     {'note': RunnablePassthrough()}
     | _EXTRACTION_PROMPT_TEMPLATE
-    | OPENAI_MODEL.bind(function_call={'name': _EXTRACTION_FUNCTION['name']}, functions=[_EXTRACTION_FUNCTION])
+    | OPENAI_GPT4_MODEL.bind(function_call={'name': _EXTRACTION_FUNCTION['name']}, functions=[_EXTRACTION_FUNCTION])
     | JsonKeyOutputFunctionsParser(key_name='issues')
 )

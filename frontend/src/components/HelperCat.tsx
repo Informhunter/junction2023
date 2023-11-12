@@ -81,7 +81,6 @@ const HelperCat: React.FC<HelperCatProps> = ({ suggestions }) => {
           },
         },
       }}
-      placement="left"
       title={<TooltipContent>{getTooltipText(suggestions)}</TooltipContent>}
     >
       <Box

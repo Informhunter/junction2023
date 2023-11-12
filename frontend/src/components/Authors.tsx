@@ -31,7 +31,23 @@ const Authors: React.FC = () => {
       <Typography variant="h5">Pepsikolniy team</Typography>
       {AUTHORS.map((member) => {
         return (
-          <Tooltip arrow key={member.githubHandle} title={member.fullName} placement="top">
+          <Tooltip
+            arrow
+            key={member.githubHandle}
+            title={<Typography>{member.fullName}</Typography>}
+            placement="top"
+            componentsProps={{
+              tooltip: {
+                sx: {
+                  borderRadius: "4px",
+                  bgcolor: "gray",
+                  "& .MuiTooltip-arrow": {
+                    color: "gray",
+                  },
+                },
+              },
+            }}
+          >
             <Avatar
               sx={{ width: 56, height: 56, marginRight: "8px" }}
               alt={member.githubHandle}

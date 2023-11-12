@@ -18,13 +18,14 @@ export interface Suggestion {
     url: string;
     title: string;
   }
+  search_summary: string | null;
 }
 
 export async function sendNote(note: string) {
   return (
     axios
-      .post<Suggestion[]>("api/note", note, {
-      // .post<Suggestion[]>("http://10.0.13.146:8080/note", note, {
+      .post<Suggestion[]>("api/note?summarize=true", note, {
+      // .post<Suggestion[]>("http://10.0.13.146:8080/note?summarize=true", note, {
         headers: { "Content-Type": "text/plain" },
       })
       .then(({ data }) => data)

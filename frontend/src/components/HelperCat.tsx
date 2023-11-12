@@ -5,25 +5,9 @@ import activeCat from "../assets/cat-active.png";
 import sleepCat from "../assets/cat-sleep.png";
 import { Suggestion } from "../api";
 
-const Links: React.FC<{ suggestions: Suggestion[] }> = ({ suggestions }) => {
-  return (
-    <ol style={{ marginLeft: "16px" }}>
-      {suggestions.map((suggestion) => {
-        return (
-          <li key={suggestion.text}>
-            <Link
-              style={{ color: "white" }}
-              to={suggestion.search_result.url}
-              target="_blank"
-            >
-              {suggestion.search_result.title}
-            </Link>
-          </li>
-        );
-      })}
-    </ol>
-  );
-};
+interface HelperCatProps {
+  suggestions: Suggestion[];
+}
 
 const getTooltipText = (suggestions: Suggestion[] | undefined) => {
   if (!suggestions) return "Please, tell me more 🙏";
@@ -44,7 +28,7 @@ const getTooltipText = (suggestions: Suggestion[] | undefined) => {
     return (
       <>
         <Typography>{suggestions[0]?.search_summary}</Typography>
-        <Links suggestions={suggestions as Suggestion[]} />
+        <SuggesionsLinks suggestions={suggestions as Suggestion[]} />
       </>
     );
   }
@@ -54,15 +38,31 @@ const getTooltipText = (suggestions: Suggestion[] | undefined) => {
       <>
         <Typography>{suggestions[0]?.search_summary}</Typography>
         <EmergencyButton>Call 112!</EmergencyButton>
-        <Links suggestions={suggestions as Suggestion[]} />
+        <SuggesionsLinks suggestions={suggestions as Suggestion[]} />
       </>
     );
   }
 };
 
-interface HelperCatProps {
-  suggestions: Suggestion[];
-}
+const SuggesionsLinks: React.FC<HelperCatProps> = ({ suggestions }) => {
+  return (
+    <ol style={{ marginLeft: "16px" }}>
+      {suggestions.map((suggestion) => {
+        return (
+          <li key={suggestion.text}>
+            <Link
+              style={{ color: "white" }}
+              to={suggestion.search_result.url}
+              target="_blank"
+            >
+              {suggestion.search_result.title}
+            </Link>
+          </li>
+        );
+      })}
+    </ol>
+  );
+};
 
 const HelperCat: React.FC<HelperCatProps> = ({ suggestions }) => {
   const hasSuggestion = suggestions.length > 0;

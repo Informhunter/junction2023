@@ -4,14 +4,11 @@ from typing import Annotated, Iterable, Sequence
 import numpy as np
 from fastapi import Body, FastAPI
 
+from src.llm.chit_chat_chain import CHIT_CHAT_CHAIN
 from src.llm.extraction_chain import EXTRACTION_CHAIN
-from src.llm.chit_chat import CHIT_CHAT_CHAIN
 from src.llm.severity_level import SeverityLevel
-from src.models import (
-    Suggestion,
-    SuggestionType,
-    WikihowSearchResult,
-)
+from src.llm.summarization_chain import SUMMARIZATION_CHAIN
+from src.models import Suggestion, SuggestionType, WikihowSearchResult
 from src.retriever import search_wikihow
 
 
@@ -26,17 +23,18 @@ async def random():
 
 
 @app.post('/note')
-async def suggest(note: Annotated[str, Body()]) -> list[Suggestion]:
-
+async def suggest(note: Annotated[str, Body()], summarize: bool = False) -> list[Suggestion]:
     if not note:
         return []
 
     suggestions = await _get_suggestions_with_llm(note)
+    if summarize:
+        suggestions = await _add_summaries(suggestions)
+
     if len(suggestions) > 0:
         return suggestions
 
     return await _get_chit_chat_suggestion(note)
-
 
 
 async def _get_suggestions_with_llm(note: str) -> list[Suggestion]:
@@ -53,7 +51,9 @@ async def _get_suggestions_with_llm(note: str) -> list[Suggestion]:
 
     suggestions = _sort_suggestions(_filter_suggestions(suggestions))
 
-    return suggestions[:_N_SUGGESTIONS_TO_RETURN]
+    suggestions = suggestions[:_N_SUGGESTIONS_TO_RETURN]
+
+    return suggestions
 
 
 async def _parse_llm_response(response: Sequence[dict[str, str]], paragraph_id: int) -> list[Suggestion]:
@@ -112,3 +112,13 @@ async def _generate_chit_chat_suggestion(paragraphs: list[str]) -> str:
     if response:
         return response.content
     return ''
+
+
+async def _add_summaries(suggestions: Sequence[Suggestion]) -> Sequence[Suggestion]:
+    indices = [i for i, suggestion in enumerate(suggestions) if suggestion.search_result]
+
+    summaries = await SUMMARIZATION_CHAIN.abatch([suggestions[i].search_result.url for i in indices])
+    for i in indices:
+        suggestions[i].search_summary = summaries[i]
+
+    return suggestions

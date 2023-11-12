@@ -1,4 +1,5 @@
 from enum import Enum
+
 from pydantic import BaseModel
 
 from src.llm.severity_level import SeverityLevel
@@ -21,3 +22,4 @@ class Suggestion(BaseModel):
     severity_level: SeverityLevel
     text: str
     search_result: WikihowSearchResult
+    search_summary: str | None = None

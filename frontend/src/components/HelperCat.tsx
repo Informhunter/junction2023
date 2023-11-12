@@ -7,7 +7,7 @@ import { Suggestion } from "../api";
 
 const Links: React.FC<{ suggestions: Suggestion[] }> = ({ suggestions }) => {
   return (
-    <ol style={{ marginLeft: '16px' }}>
+    <ol style={{ marginLeft: "16px" }}>
       {suggestions.map((suggestion) => {
         return (
           <li key={suggestion.text}>
@@ -25,13 +25,8 @@ const Links: React.FC<{ suggestions: Suggestion[] }> = ({ suggestions }) => {
   );
 };
 
-const getTooltipText = (
-  hasSuggestion: boolean,
-  suggestions: Suggestion[] | undefined
-) => {
-  if (!hasSuggestion) {
-    return "Please, tell me more 🙏";
-  }
+const getTooltipText = (suggestions: Suggestion[] | undefined) => {
+  if (!suggestions) return "Please, tell me more 🙏";
 
   const hasCriticalSeverityLevel = suggestions?.some(
     (suggestion) => suggestion.severity_level === "critical"
@@ -42,46 +37,40 @@ const getTooltipText = (
   );
 
   if (isChitChat && suggestions !== undefined) {
-    return (
-      <div>
-        <Typography>{suggestions[0].search_result.title}</Typography>
-      </div>
-    );
+    return <Typography>{suggestions[0]?.search_result.title}</Typography>;
   }
 
   if (!hasCriticalSeverityLevel) {
     return (
-      <div>
-        <Typography>This can help you! 😊</Typography>
+      <>
+        <Typography>{suggestions[0]?.search_summary}</Typography>
         <Links suggestions={suggestions as Suggestion[]} />
-      </div>
+      </>
     );
   }
 
   if (hasCriticalSeverityLevel) {
     return (
-      <div>
-        <Typography sx={{ marginBottom: " 8px" }}>
-          Your condition is at a critical level. You need to seek medical
-          assistance urgently!
-        </Typography>
+      <>
+        <Typography>{suggestions[0]?.search_summary}</Typography>
         <EmergencyButton>Call 112!</EmergencyButton>
         <Links suggestions={suggestions as Suggestion[]} />
-      </div>
+      </>
     );
   }
 };
 
 interface HelperCatProps {
-  suggestions: Suggestion[] | undefined;
+  suggestions: Suggestion[];
 }
 
 const HelperCat: React.FC<HelperCatProps> = ({ suggestions }) => {
-  const hasSuggestion = !!suggestions;
+  const hasSuggestion = suggestions.length > 0;
 
   return (
     <Tooltip
       arrow
+      open={hasSuggestion}
       componentsProps={{
         tooltip: {
           sx: {
@@ -93,11 +82,7 @@ const HelperCat: React.FC<HelperCatProps> = ({ suggestions }) => {
           },
         },
       }}
-      title={
-        <TooltipContent>
-          {getTooltipText(hasSuggestion, suggestions)}
-        </TooltipContent>
-      }
+      title={<TooltipContent>{getTooltipText(suggestions)}</TooltipContent>}
     >
       <Box
         component="img"

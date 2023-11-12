@@ -13,7 +13,7 @@ const Editor: React.FC = () => {
   const editorRef = useRef<HTMLTextAreaElement>(null);
   const [shouldRequest, setShouldRequest] = useState(false);
 
-  const { isFetching, isSuccess, data } = useQuery(
+  const { isFetching, data } = useQuery(
     ["sendNote", editorRef.current?.value],
     () => sendNote(editorRef.current?.value as string),
     {
@@ -38,7 +38,7 @@ const Editor: React.FC = () => {
           Submit
         </SubmitButton>
       </DiaryFormContainer>
-      <HelperCat suggestions={!isFetching && isSuccess ? data : undefined} />
+      <HelperCat suggestions={data ?? []} />
     </Container>
   );
 };

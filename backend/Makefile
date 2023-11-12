@@ -9,6 +9,9 @@ DOCKER_WORKDIR := /app
 
 export REPO ?= junction2023-backend
 export TAG ?= latest
+export OPENAI_SECRET_KEY ?=
+export OPENAI_ORG_ID ?=
+
 
 .PHONY: help test init lint shell pretty
 
@@ -58,6 +61,8 @@ docker-%:
 	docker run \
 		-v $(PWD):$(DOCKER_WORKDIR) \
 		-p 8080:8080 \
+		--env OPENAI_SECRET_KEY=$(OPENAI_SECRET_KEY) \
+		--env OPENAI_ORG_ID=$(OPENAI_ORG_ID) \
 		--rm \
 		$(REPO):$(TAG) make $(subst docker-,,$@)
 

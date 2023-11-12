@@ -38,7 +38,7 @@ const Editor: React.FC = () => {
           Submit
         </SubmitButton>
       </DiaryFormContainer>
-      <HelperCat suggestions={!isFetching && isSuccess ? data : undefined} />
+      <HelperCat suggestions={data ?? []} />
     </Container>
   );
 };

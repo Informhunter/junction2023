@@ -37,13 +37,13 @@ const getTooltipText = (suggestions: Suggestion[] | undefined) => {
   );
 
   if (isChitChat && suggestions !== undefined) {
-    return <Typography>{suggestions[0].search_result.title}</Typography>;
+    return <Typography>{suggestions[0]?.search_result.title}</Typography>;
   }
 
   if (!hasCriticalSeverityLevel) {
     return (
       <>
-        <Typography>{suggestions[0].search_summary}</Typography>
+        <Typography>{suggestions[0]?.search_summary}</Typography>
         <Links suggestions={suggestions as Suggestion[]} />
       </>
     );
@@ -52,7 +52,7 @@ const getTooltipText = (suggestions: Suggestion[] | undefined) => {
   if (hasCriticalSeverityLevel) {
     return (
       <>
-        <Typography>{suggestions[0].search_summary}</Typography>
+        <Typography>{suggestions[0]?.search_summary}</Typography>
         <EmergencyButton>Call 112!</EmergencyButton>
         <Links suggestions={suggestions as Suggestion[]} />
       </>
@@ -61,15 +61,16 @@ const getTooltipText = (suggestions: Suggestion[] | undefined) => {
 };
 
 interface HelperCatProps {
-  suggestions: Suggestion[] | undefined;
+  suggestions: Suggestion[];
 }
 
 const HelperCat: React.FC<HelperCatProps> = ({ suggestions }) => {
-  const hasSuggestion = !!suggestions;
+  const hasSuggestion = suggestions.length > 0;
 
   return (
     <Tooltip
       arrow
+      open={hasSuggestion}
       componentsProps={{
         tooltip: {
           sx: {

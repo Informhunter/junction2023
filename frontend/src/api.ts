@@ -12,6 +12,7 @@ export async function getRandomNumber() {
 export interface Suggestion {
   paragraph_id: number;
   severity_level: 'low' | 'moderate' | 'critical';
+  type: 'chit-chat' | 'how-to';
   text: string;
   search_result: {
     url: string;

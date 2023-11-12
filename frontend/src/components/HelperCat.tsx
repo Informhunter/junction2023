@@ -37,6 +37,18 @@ const getTooltipText = (
     (suggestion) => suggestion.severity_level === "critical"
   );
 
+  const isChitChat = suggestions?.some(
+    (suggestion) => suggestion.type === "chit-chat"
+  );
+
+  if (isChitChat && suggestions !== undefined) {
+    return (
+      <div>
+        <Typography>{suggestions[0].search_result.title}</Typography>
+      </div>
+    );
+  }
+
   if (!hasCriticalSeverityLevel) {
     return (
       <div>

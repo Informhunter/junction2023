@@ -1,7 +1,9 @@
 # Junction 2023 - Diary Assistant
 
+http://34.36.203.42/
+
 Diary is a common tool for dealing with different kinds of issues including chronic pain (in some cases writing a diary can even be prescribed).
-It's a safe place where you pour down your feelings, express your ideas, your hopes, your sadness. It’s hard to stick to a diary routine though - it’s often unmotivating and can feel lonely. 
+It's a safe place where you pour down your feelings, express your ideas, your hopes, your sadness. It’s hard to stick to a diary routine though - it’s often unmotivating and can feel lonely.
 
 What if where would be someone ready to help?
 

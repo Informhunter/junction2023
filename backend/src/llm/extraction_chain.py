@@ -2,7 +2,7 @@ from langchain.output_parsers.openai_functions import JsonKeyOutputFunctionsPars
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema.runnable import RunnablePassthrough
 
-from src.llm.openai import OPENAI_GPT4_MODEL
+from src.llm.openai import OPENAI_EXTRACTION_MODEL
 from src.llm.severity_level import SeverityLevel
 
 
@@ -55,6 +55,9 @@ _EXTRACTION_FUNCTION = {
 EXTRACTION_CHAIN = (
     {'note': RunnablePassthrough()}
     | _EXTRACTION_PROMPT_TEMPLATE
-    | OPENAI_GPT4_MODEL.bind(function_call={'name': _EXTRACTION_FUNCTION['name']}, functions=[_EXTRACTION_FUNCTION])
+    | OPENAI_EXTRACTION_MODEL.bind(
+        function_call={'name': _EXTRACTION_FUNCTION['name']},
+        functions=[_EXTRACTION_FUNCTION],
+    )
     | JsonKeyOutputFunctionsParser(key_name='issues')
 )

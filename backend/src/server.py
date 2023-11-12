@@ -28,10 +28,11 @@ async def suggest(note: Annotated[str, Body()], summarize: bool = False) -> list
         return []
 
     suggestions = await _get_suggestions_with_llm(note)
-    if summarize:
-        suggestions = await _add_summaries(suggestions)
 
     if len(suggestions) > 0:
+        if summarize:
+            suggestions[0] = await _add_summary(suggestions[0])
+
         return suggestions
 
     return await _get_chit_chat_suggestion(note)
@@ -114,11 +115,8 @@ async def _generate_chit_chat_suggestion(paragraphs: list[str]) -> str:
     return ''
 
 
-async def _add_summaries(suggestions: Sequence[Suggestion]) -> Sequence[Suggestion]:
-    indices = [i for i, suggestion in enumerate(suggestions) if suggestion.search_result]
+async def _add_summary(suggestion: Suggestion) -> Suggestion:
+    if suggestion.search_result:
+        suggestion.search_summary = await SUMMARIZATION_CHAIN.ainvoke(suggestion.search_result.url)
 
-    summaries = await SUMMARIZATION_CHAIN.abatch([suggestions[i].search_result.url for i in indices])
-    for i in indices:
-        suggestions[i].search_summary = summaries[i]
-
-    return suggestions
+    return suggestion

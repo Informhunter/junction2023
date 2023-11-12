@@ -27,6 +27,7 @@ const Editor: React.FC = () => {
     <Container>
       <DiaryFormContainer>
         <StyledTextareaAutosize
+          defaultValue={`# Monday\nI feel a bit upset. My friend is moving to another country in a couple of days`}
           ref={editorRef}
           placeholder="Please, lay down your thoughts..."
         />
